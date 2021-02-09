@@ -1,0 +1,104 @@
+---
+# this ensures Jekyll reads the file to be transformed into CSS later
+# only Main files contain this front matter, not partials.
+---
+
+
+$side: 120px
+$l: 90px
+$num: 10
+$dur: 10s
+
+@mixin plane($w, $h)
+  width: $w
+  height: $h
+  transform-style: preserve-3d
+  
+@mixin view($p)
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  perspective: $p
+
+@mixin center
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  margin: auto      
+
+body
+  padding-top: 100px
+  font-size: 12px
+  font-family: ubuntu mono
+  background-color: black
+  color: white
+  margin: 0
+
+a
+  color: red
+  font-weight: bold
+  text-decoration: none
+
+
+a.logo, a.logo:hover, a.logo:active
+  color: white
+  text-decoration: none
+
+
+a:hover, a:active
+  color: lightcoral
+  text-decoration: underline
+
+.content
+  width: 400px
+  margin: 20px auto
+
+.view
+  @include view(400)
+    
+.plane
+  @include plane($side, $side)
+  
+  &.main
+    @include center
+    transform: rotateX(60deg) rotateZ(-30deg)
+    animation: rotate 20s infinite linear
+      
+    .circle
+      width: $side
+      height: $side
+      position: absolute
+      transform-style: preserve-3d
+      border-radius: 100%
+      //border: 2px solid white
+      box-sizing: border-box
+      box-shadow: 0 0 60px rgba(crimson, 1), inset 0 0 60px rgba(crimson, 1)
+  
+      &::before, &::after
+        content: ''
+        display: block
+        @include center
+        width: 10%
+        height: 10%
+        border-radius: 100%
+        background: rgba(crimson, 1)
+        //border: 4px solid black
+        box-sizing: border-box
+        box-shadow: 0 0 60px 2px rgba(crimson, 1)
+
+      &::before
+        transform: translateZ(-$l)
+      &::after
+        transform: translateZ($l)
+  
+      @for $i from 1 through 5
+        &:nth-child(#{$i})
+          transform: rotateZ($i / 5 * 360deg) rotateX(63.435deg)
+  
+@keyframes rotate
+  0%
+    transform: rotateX(0) rotateY(0) rotateZ(0)
+  100%
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg)
